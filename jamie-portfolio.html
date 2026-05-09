@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jamie Jamora — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============================================
+     EASY EDIT ZONE — change colors & fonts here
+     ============================================ */
+  :root {
+    --bg:        #0D0D0D;       /* page background */
+    --surface:   #161616;       /* card background */
+    --border:    rgba(255,255,255,0.08);
+    --accent:    #C8F04B;       /* your highlight color — change this! */
+    --accent2:   #4BF0C8;       /* secondary highlight */
+    --text:      #F0EDE6;       /* main text */
+    --muted:     rgba(240,237,230,0.45);
+    --font-head: 'Playfair Display', Georgia, serif;
+    --font-body: 'Jost', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* ---- NOISE TEXTURE ---- */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px;
+  }
+
+  /* ---- NAV ---- */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.1rem 3rem;
+    background: rgba(13,13,13,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--font-head); font-size: 1.1rem; font-style: italic;
+    color: var(--accent); letter-spacing: 0.02em;
+  }
+  .nav-links { display: flex; gap: 2.5rem; }
+  .nav-links a {
+    text-decoration: none; font-size: 12px; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ---- HERO ---- */
+  .hero {
+    min-height: 100vh; display: flex; align-items: center;
+    padding: 8rem 3rem 4rem; max-width: 1200px; margin: 0 auto;
+    position: relative;
+  }
+  .hero-inner { max-width: 780px; }
+  .hero-label {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 2rem;
+  }
+  .hero-label::before {
+    content: ''; width: 32px; height: 1px; background: var(--accent);
+  }
+  .hero h1 {
+    font-family: var(--font-head);
+    font-size: clamp(3rem, 7vw, 6rem);
+    line-height: 1.05; font-weight: 400; margin-bottom: .5rem;
+  }
+  .hero h1 .name { display: block; color: var(--text); }
+  .hero h1 .title { display: block; font-style: italic; color: var(--accent); }
+  .hero-sub {
+    font-size: 1.05rem; color: var(--muted);
+    max-width: 520px; margin: 2rem 0 3rem; line-height: 1.85;
+  }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 28px; border-radius: 2px;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    text-decoration: none; transition: all .2s; cursor: pointer; border: none;
+  }
+  .btn-primary { background: var(--accent); color: #0D0D0D; }
+  .btn-primary:hover { background: var(--text); }
+  .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+  .hero-stats {
+    display: flex; gap: 3.5rem; margin-top: 5rem;
+    padding-top: 2.5rem; border-top: 1px solid var(--border); flex-wrap: wrap;
+  }
+  .stat-num {
+    font-family: var(--font-head); font-size: 2.8rem; font-weight: 700;
+    color: var(--accent); display: block; line-height: 1;
+  }
+  .stat-label { font-size: 11px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 6px; }
+
+  /* ---- SECTIONS ---- */
+  section { padding: 7rem 3rem; position: relative; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  .section-tag {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1.25rem;
+  }
+  .section-tag::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+  .section-title {
+    font-family: var(--font-head);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 400; line-height: 1.15; margin-bottom: 1rem; color: var(--text);
+  }
+  .section-title em { font-style: italic; color: var(--accent); }
+  .section-sub { font-size: .95rem; color: var(--muted); max-width: 500px; line-height: 1.85; }
+
+  /* ---- ABOUT ---- */
+  #about { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .about-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 6rem; margin-top: 4rem; align-items: start; }
+  .about-text p { color: var(--muted); line-height: 1.95; margin-bottom: 1.25rem; font-size: 15px; }
+  .about-text p strong { color: var(--text); font-weight: 500; }
+  .about-right {}
+  .skill-block { margin-bottom: 2rem; }
+  .skill-block-title {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent2); margin-bottom: .75rem;
+  }
+  .pill-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pill {
+    font-size: 12px; padding: 4px 14px;
+    border: 1px solid var(--border); border-radius: 100px;
+    color: var(--muted); background: transparent; transition: all .2s;
+  }
+  .pill:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ---- EXPERIENCE ---- */
+  #experience { background: var(--bg); }
+  .exp-list { margin-top: 4rem; display: grid; gap: 1px; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .exp-item {
+    display: grid; grid-template-columns: 220px 1fr;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    transition: background .2s;
+  }
+  .exp-item:last-child { border-bottom: none; }
+  .exp-item:hover { background: #1e1e1e; }
+  .exp-left {
+    padding: 2rem;
+    border-right: 1px solid var(--border);
+  }
+  .exp-period { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: .4rem; }
+  .exp-company { font-family: var(--font-head); font-size: 1.1rem; color: var(--text); margin-bottom: .4rem; line-height: 1.3; }
+  .exp-badge {
+    display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 0.06em;
+    padding: 2px 10px; border-radius: 100px; margin-top: .25rem;
+  }
+  .badge-ft { background: rgba(75,240,200,0.12); color: var(--accent2); border: 1px solid rgba(75,240,200,0.2); }
+  .badge-pt { background: rgba(200,240,75,0.1); color: var(--accent); border: 1px solid rgba(200,240,75,0.2); }
+  .badge-gig { background: rgba(240,150,75,0.1); color: #F09645; border: 1px solid rgba(240,150,75,0.2); }
+  .exp-right { padding: 2rem 2.5rem; }
+  .exp-role { font-size: .85rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+  .exp-bullets { list-style: none; padding: 0; }
+  .exp-bullets li {
+    font-size: 14px; color: var(--muted); line-height: 1.75;
+    padding: .35rem 0 .35rem 1.5rem; position: relative;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .exp-bullets li:last-child { border-bottom: none; }
+  .exp-bullets li::before {
+    content: '→'; position: absolute; left: 0;
+    color: var(--accent); font-size: 12px; top: .45rem;
+  }
+  .exp-bullets li strong { color: var(--text); font-weight: 500; }
+
+  /* ---- SERVICES ---- */
+  #services { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 4rem; background: var(--border); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .svc {
+    background: var(--surface); padding: 2.5rem;
+    transition: background .2s;
+  }
+  .svc:hover { background: #1c1c1c; }
+  .svc-num { font-family: var(--font-head); font-size: 3rem; color: var(--border); font-weight: 700; line-height: 1; margin-bottom: 1.25rem; }
+  .svc-title { font-size: .95rem; font-weight: 600; letter-spacing: 0.04em; color: var(--text); margin-bottom: .6rem; }
+  .svc-desc { font-size: 13px; color: var(--muted); line-height: 1.8; }
+
+  /* ---- TOOLS ---- */
+  #tools { background: var(--bg); }
+  .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 3.5rem; }
+  .tool-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 4px; padding: 1.25rem 1.5rem;
+    transition: border-color .2s;
+  }
+  .tool-card:hover { border-color: rgba(200,240,75,0.3); }
+  .tool-card-name { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent2); margin-bottom: .75rem; }
+  .tool-pills { display: flex; flex-wrap: wrap; gap: 5px; }
+  .tpill { font-size: 11px; padding: 3px 10px; border-radius: 100px; background: rgba(255,255,255,0.04); color: var(--muted); border: 1px solid var(--border); }
+
+  /* ---- CONTACT ---- */
+  #contact { background: var(--surface); border-top: 1px solid var(--border); }
+  .contact-inner { max-width: 680px; margin: 0 auto; text-align: center; padding-top: 1rem; }
+  .contact-inner .section-title { font-size: clamp(2.2rem, 5vw, 4rem); }
+  .contact-inner p { color: var(--muted); font-size: 15px; margin: 1.5rem 0 2.5rem; line-height: 1.85; }
+  .contact-links { display: flex; justify-content: center; flex-wrap: wrap; gap: .75rem; }
+  .clink {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 11px 22px; border-radius: 2px;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    text-decoration: none; border: 1px solid var(--border); color: var(--muted);
+    transition: all .2s;
+  }
+  .clink:hover { border-color: var(--accent); color: var(--accent); }
+  .clink.primary { background: var(--accent); color: #0D0D0D; border-color: var(--accent); }
+  .clink.primary:hover { background: var(--text); border-color: var(--text); }
+
+  /* ---- FOOTER ---- */
+  footer {
+    background: var(--bg); border-top: 1px solid var(--border);
+    text-align: center; padding: 2rem 3rem;
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+  }
+
+  /* ---- ANIMATIONS ---- */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* ---- PRINT / PDF ---- */
+  @media print {
+    nav, .hero-actions, .contact-links, footer { display: none !important; }
+    body { background: white !important; color: #111 !important; }
+    .hero, section { padding: 2rem !important; break-inside: avoid; }
+    .exp-item, .svc, .tool-card { break-inside: avoid; }
+  }
+
+  /* ---- RESPONSIVE ---- */
+  @media(max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero, section { padding: 5rem 1.5rem 3rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .exp-item { grid-template-columns: 1fr; }
+    .exp-left { border-right: none; border-bottom: 1px solid var(--border); padding: 1.5rem; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media(max-width: 560px) {
+    .hero h1 { font-size: 2.6rem; }
+    .hero-stats { gap: 2rem; }
+    .services-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =============================================
+     HOW TO EDIT THIS PORTFOLIO
+     =============================================
+     1. Open this file in any text editor
+        (Notepad, VS Code, Sublime Text, etc.)
+     2. Use Ctrl+F (Find) to search for the
+        section you want to change.
+     3. Look for <!-- EDIT: --> comments —
+        they mark every place you need to fill in.
+     4. Save the file after editing (Ctrl+S).
+     5. To save as PDF:
+        - Open the file in Chrome or Edge
+        - Press Ctrl+P (or Cmd+P on Mac)
+        - Change "Destination" to "Save as PDF"
+        - Set Layout to "Portrait"
+        - Under "More settings" set Margins to "None"
+        - Click Save
+     ============================================= -->
+
+<nav>
+  <!-- EDIT: Change "Jamie Jamora" to your name -->
+  <div class="nav-logo">Jamie Jamora</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#tools">Tools</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<div class="hero">
+  <div class="hero-inner reveal">
+
+    <!-- EDIT: Change the label tag text -->
+    <div class="hero-label">Available for remote work</div>
+
+    <h1>
+      <!-- EDIT: Your full name -->
+      <span class="name">Jamie Jamora</span>
+      <!-- EDIT: Your job title -->
+      <span class="title">Digital Project Manager & SEO Specialist</span>
+    </h1>
+
+    <!-- EDIT: Your one-paragraph pitch -->
+    <p class="hero-sub">
+      I help businesses grow online, stay organized, and get things done.
+      4+ years managing SEO, digital marketing, and web operations —
+      across agencies and in-house teams. Based in the Philippines,
+      working with clients worldwide.
+    </p>
+
+    <div class="hero-actions">
+      <!-- EDIT: Update the mailto link with your email -->
+      <a href="mailto:jamiemfljamora@gmail.com" class="btn btn-primary">Get in touch</a>
+      <a href="#services" class="btn btn-outline">What I offer</a>
+    </div>
+
+    <!-- EDIT: Change the 4 stats to match your numbers -->
+    <div class="hero-stats">
+      <div>
+        <span class="stat-num">4+</span>
+        <span class="stat-label">Years experience</span>
+      </div>
+      <div>
+        <span class="stat-num">8</span>
+        <span class="stat-label">Years leadership</span>
+      </div>
+      <div>
+        <span class="stat-num">140%</span>
+        <span class="stat-label">Avg traffic growth</span>
+      </div>
+      <div>
+        <span class="stat-num">20+</span>
+        <span class="stat-label">Tools mastered</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ABOUT ============ -->
+<section id="about">
+  <div class="container reveal">
+    <p class="section-tag">About me</p>
+    <!-- EDIT: Change the section headline -->
+    <h2 class="section-title">The strategy person<br>who also <em>does the work.</em></h2>
+
+    <div class="about-grid">
+      <div class="about-text">
+
+        <p>I'm <strong>Jamie Jamora</strong>, a digital marketing professional from the Philippines with <strong>4+ years of remote experience</strong> managing SEO, websites, social media, and email marketing for US-based clients — across agencies and in-house teams.</p>
+
+        <p style="margin-top:1.5rem;font-size:13px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent2)">The challenge</p>
+        <p>I was tasked with independently managing the <strong>entire online presence</strong> of a US medical clinic — SEO, website, Google Business Profile, social media, and email — all at once, with no dedicated team around me.</p>
+
+        <p style="margin-top:1.5rem;font-size:13px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent2)">What I did</p>
+        <p>I took full ownership of every channel. I ran technical audits, wrote and published SEO content, coordinated two separate website projects with developers and agencies, managed Facebook, Instagram, and YouTube, ran email campaigns on Mailchimp, MailPoet, and Brevo, and delivered weekly Looker Studio reports with strategy recommendations — all while contributing to two agencies simultaneously as an SEO specialist.</p>
+
+        <p style="margin-top:1.5rem;font-size:13px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent2)">The results</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem 1.5rem;margin-top:.5rem">
+          <div style="padding:.75rem 1rem;background:rgba(200,240,75,0.06);border:1px solid rgba(200,240,75,0.15);border-radius:4px">
+            <div style="font-family:var(--font-head);font-size:1.6rem;color:var(--accent);line-height:1">140%</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px">Organic traffic growth</div>
+          </div>
+          <div style="padding:.75rem 1rem;background:rgba(200,240,75,0.06);border:1px solid rgba(200,240,75,0.15);border-radius:4px">
+            <div style="font-family:var(--font-head);font-size:1.6rem;color:var(--accent);line-height:1">45K+</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px">Monthly impressions</div>
+          </div>
+          <div style="padding:.75rem 1rem;background:rgba(200,240,75,0.06);border:1px solid rgba(200,240,75,0.15);border-radius:4px">
+            <div style="font-family:var(--font-head);font-size:1.6rem;color:var(--accent);line-height:1">60%</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px">GBP visibility increase</div>
+          </div>
+          <div style="padding:.75rem 1rem;background:rgba(200,240,75,0.06);border:1px solid rgba(200,240,75,0.15);border-radius:4px">
+            <div style="font-family:var(--font-head);font-size:1.6rem;color:var(--accent);line-height:1">28%</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px">Email open rate avg</div>
+          </div>
+        </div>
+
+        <p style="margin-top:1.75rem">Before digital marketing, I spent <strong>8 years as a DepEd teacher and Grade 4 Level Chairman</strong> — leading a team across 4 sections, presenting reports to the school principal, managing procurement, and running all department operations. That background is what makes me unusually structured and reliable for a remote role.</p>
+
+        <p style="margin-top:1.25rem">I'm looking for a <strong>stable, long-term full-time remote position</strong> where I can bring all of this to one great team.</p>
+
+      </div>
+
+      <div class="about-right">
+        <!-- EDIT: Update skills in each group -->
+        <div class="skill-block">
+          <div class="skill-block-title">SEO & Digital Marketing</div>
+          <div class="pill-row">
+            <span class="pill">Technical SEO</span>
+            <span class="pill">On-page SEO</span>
+            <span class="pill">Local SEO</span>
+            <span class="pill">Content strategy</span>
+            <span class="pill">GBP management</span>
+            <span class="pill">Schema markup</span>
+          </div>
+        </div>
+        <div class="skill-block">
+          <div class="skill-block-title">Project & Operations</div>
+          <div class="pill-row">
+            <span class="pill">Project coordination</span>
+            <span class="pill">Team management</span>
+            <span class="pill">Weekly reporting</span>
+            <span class="pill">Vendor coordination</span>
+            <span class="pill">Process documentation</span>
+          </div>
+        </div>
+        <div class="skill-block">
+          <div class="skill-block-title">Web & Admin</div>
+          <div class="pill-row">
+            <span class="pill">WordPress</span>
+            <span class="pill">Shopify</span>
+            <span class="pill">Website management</span>
+            <span class="pill">Email marketing</span>
+            <span class="pill">Social media</span>
+            <span class="pill">Google Workspace</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ SERVICES ============ -->
+<section id="services">
+  <div class="container reveal">
+    <p class="section-tag">What I offer</p>
+    <h2 class="section-title">How I can help<br><em>your business.</em></h2>
+    <p class="section-sub">Strategic thinking and hands-on execution — rare to find in one person.</p>
+
+    <div class="services-grid">
+      <!-- EDIT: Change service titles and descriptions -->
+      <div class="svc">
+        <div class="svc-num">01</div>
+        <div class="svc-title">Full-Scale SEO</div>
+        <div class="svc-desc">Technical audits, on-page optimization, schema, content strategy, local SEO, and GBP management — end to end.</div>
+      </div>
+      <div class="svc">
+        <div class="svc-num">02</div>
+        <div class="svc-title">Digital Project Management</div>
+        <div class="svc-desc">Keeping your team, vendors, and timelines aligned using Notion, Slack, or Teamwork. Nothing falls through the cracks.</div>
+      </div>
+      <div class="svc">
+        <div class="svc-num">03</div>
+        <div class="svc-title">Website Management</div>
+        <div class="svc-desc">WordPress and Shopify updates, hosting coordination, plugin management, and agency liaison. Your site stays healthy.</div>
+      </div>
+      <div class="svc">
+        <div class="svc-num">04</div>
+        <div class="svc-title">Reporting & Analytics</div>
+        <div class="svc-desc">Weekly or monthly dashboards in Looker Studio — always visual, always paired with clear next-step recommendations.</div>
+      </div>
+      <div class="svc">
+        <div class="svc-num">05</div>
+        <div class="svc-title">SEO Content Writing</div>
+        <div class="svc-desc">Blog posts, service pages, and web copy — researched, optimized, and written to rank and convert real visitors.</div>
+      </div>
+      <div class="svc">
+        <div class="svc-num">06</div>
+        <div class="svc-title">Executive & Virtual Admin</div>
+        <div class="svc-desc">Email management, scheduling, documentation, coordination, and reporting — so you can focus on the big picture.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOOLS ============ -->
+<section id="tools">
+  <div class="container reveal">
+    <p class="section-tag">Tech stack</p>
+    <h2 class="section-title">Tools I work<br><em>with daily.</em></h2>
+
+    <div class="tools-grid">
+      <!-- EDIT: Add or remove tools in each card -->
+      <div class="tool-card">
+        <div class="tool-card-name">SEO & Research</div>
+        <div class="tool-pills">
+          <span class="tpill">SEMrush</span>
+          <span class="tpill">Ahrefs</span>
+          <span class="tpill">Screaming Frog</span>
+          <span class="tpill">UberSuggest</span>
+          <span class="tpill">NeuronWriter</span>
+          <span class="tpill">ZimmWriter</span>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-card-name">Analytics & Reporting</div>
+        <div class="tool-pills">
+          <span class="tpill">Google Analytics</span>
+          <span class="tpill">Search Console</span>
+          <span class="tpill">Looker Studio</span>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-card-name">Project Management</div>
+        <div class="tool-pills">
+          <span class="tpill">Teamwork</span>
+          <span class="tpill">Notion</span>
+          <span class="tpill">Slack</span>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-card-name">Web & CMS</div>
+        <div class="tool-pills">
+          <span class="tpill">WordPress</span>
+          <span class="tpill">Shopify</span>
+          <span class="tpill">Yoast</span>
+          <span class="tpill">Rank Math</span>
+          <span class="tpill">GoDaddy</span>
+          <span class="tpill">Cloudways</span>
+          <span class="tpill">WP Engine</span>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-card-name">AI & Content</div>
+        <div class="tool-pills">
+          <span class="tpill">ChatGPT</span>
+          <span class="tpill">Claude</span>
+          <span class="tpill">Perplexity</span>
+          <span class="tpill">Canva</span>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-card-name">Social Media</div>
+        <div class="tool-pills">
+          <span class="tpill">Meta Business Suite</span>
+          <span class="tpill">Facebook Ads</span>
+          <span class="tpill">Instagram</span>
+          <span class="tpill">YouTube</span>
+          <span class="tpill">Google Ads</span>
+          <span class="tpill">Canva</span>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-card-name">Email Marketing</div>
+        <div class="tool-pills">
+          <span class="tpill">Mailchimp</span>
+          <span class="tpill">MailPoet</span>
+          <span class="tpill">Brevo</span>
+          <span class="tpill">Email Design</span>
+          <span class="tpill">Campaign Reporting</span>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-card-name">Local SEO & GBP</div>
+        <div class="tool-pills">
+          <span class="tpill">Google Business Profile</span>
+          <span class="tpill">Google Maps</span>
+          <span class="tpill">Review Management</span>
+          <span class="tpill">Local Citations</span>
+        </div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-card-name">Admin & Docs</div>
+        <div class="tool-pills">
+          <span class="tpill">Google Workspace</span>
+          <span class="tpill">Google Sheets</span>
+          <span class="tpill">Google Docs</span>
+          <span class="tpill">Excel</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-inner reveal">
+      <p class="section-tag" style="justify-content:center">Get in touch</p>
+      <h2 class="section-title">Let's work<br><em>together.</em></h2>
+      <!-- EDIT: Update your contact paragraph -->
+      <p>I'm currently open to full-time remote opportunities as a Digital Project Manager, SEO Specialist, or Virtual Operations Assistant. If you're looking for someone reliable, organized, and genuinely invested in your growth — I'd love to hear from you.</p>
+      <div class="contact-links">
+        <!-- EDIT: Update all links with your real URLs and email -->
+        <a href="https://mail.google.com/mail/?view=cm&to=jamiemfljamora@gmail.com">✉ Email me</a>
+        <a href="https://www.linkedin.com/in/jamie-digital-marketing-expert-philippines/" class="clink" target="_blank">LinkedIn</a>
+        <a href="https://www.upwork.com/freelancers/~01a7d0437b27f08aa2" class="clink" target="_blank">Upwork</a>
+        <a href="https://v2.onlinejobs.ph/jobseekers/info/807214" class="clink" target="_blank">OnlineJobs.ph</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <!-- EDIT: Update footer name -->
+  Jamie Jamora &nbsp;·&nbsp; Digital Project Manager & SEO Specialist &nbsp;·&nbsp; Philippines
+</footer>
+
+<script>
+  // Scroll reveal animation
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
